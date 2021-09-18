@@ -1,0 +1,51 @@
+@import './../../../stylesheets/param';
+
+/*--Mobile and Tablet--*/
+@media (max-width: 1023px){
+	.hide-on-tablet-mobile{
+		display: none;
+	}
+    .show-on-tablet-mobile{
+        display: block;
+    }
+}   
+
+/*--Tablet--*/
+@media (min-width: 740px) and (max-width: 1023px){
+	.hide-on-tablet{
+		display: none;
+	}
+}
+
+/*--Mobile--*/
+@media (max-width: 739px){
+	.hide-on-mobile{
+		display: none;
+	}
+	.show-on-mobile{
+		display: block;
+	}
+    .footer .footer__wrapper .footer-body{
+        flex-direction: column;
+        
+    }
+    .footer-body__left{
+        width: 100%;
+    }
+    .footer-body__right{
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .footer-body__left .body-left-content .content-address, .footer-body__left .body-left-content .content-phone, 
+    .footer-body__left .body-left-content .content-email{
+        font-size: 1.5rem;
+    }
+    .footer-body__right .body-right-col{
+        width: 50%;
+        margin-bottom: 10px;
+    }
+}
+@media (max-width: 500px){
+    
+}

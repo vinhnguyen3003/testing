@@ -1,0 +1,91 @@
+import axios from "axios";
+import { createContext, useReducer } from "react";
+import { OrderReducer } from "../reducers/orderReducer";
+import { ADD_ORDER, apiUrl, DELETE_ORDER, ORDER_LOADED_FAIL, ORDER_LOADED_SUCCESS, UPDATE_ORDER } from "./constants";
+
+
+export const OrderContext = createContext();
+
+const OrderContextProvider = ({children}) => {
+    //state
+    const [orderState, dispatch] = useReducer(OrderReducer, {
+        orders: []
+    })
+
+    //get order
+    const getOrders = async () => {
+        try {
+            const response = await axios.get(`${apiUrl}/order`);
+            if(response.data.success){
+                dispatch({
+                    type: ORDER_LOADED_SUCCESS,
+                    payload: response.data.orders
+                })
+            }
+        } catch (error) {
+            console.log(error)
+            dispatch({type: ORDER_LOADED_FAIL})
+        }
+    }
+    //add order
+    const addOrder = async (addData) => {
+        try {
+            const response = await axios.post(`${apiUrl}/order/create`, addData);
+            if(response.data.success){
+                dispatch({
+                    type: ADD_ORDER,
+                    payload: response.data.orders
+                })
+            }
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    //update order
+    const updateOrder = async (orderID, updateData) => {
+        try {
+            const response = await axios.put(`${apiUrl}/order/${orderID}`, updateData);
+            if(response.data.success){
+                dispatch({
+                    type: UPDATE_ORDER,
+                    payload: response.data.updateOrder
+                })
+            }
+            return response.data
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    //delete order
+    const deleteOrder = async (orderID) => {
+        try {
+            const response = await axios.delete(`${apiUrl}/order/${orderID}`);
+            if(response.data.success){
+                dispatch({
+                    type: DELETE_ORDER,
+                    payload: orderID
+                })
+            }
+            return response.data
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    //order context data
+    const orderContextData = {
+        orderState,
+        getOrders,
+        addOrder,
+        updateOrder,
+        deleteOrder
+    }
+    return (
+        <OrderContext.Provider value={orderContextData}>
+            {children}
+        </OrderContext.Provider>
+    )
+}
+
+export default OrderContextProvider;
